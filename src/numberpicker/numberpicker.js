@@ -12,22 +12,26 @@ angular.module('ui.bootstrap.numberpicker', [])
 })
 
 .controller('NumberpickerController', ['$scope', '$attrs', '$parse', '$log', '$locale', 'numberpickerConfig', function($scope, $attrs, $parse, $log, $locale, numberpickerConfig) {
-  var selected = angular.isDefined($attrs.defaultValue) ? $scope.$parent.$eval($attrs.defaultValue) : numberpickerConfig.defaultValue,
+  // variable where we can hold a new value and validate it before updating the view
+  var newPickerValue = angular.isDefined($attrs.defaultValue) ? $scope.$parent.$eval($attrs.defaultValue) : numberpickerConfig.defaultValue,
       ngModelCtrl = { $setViewValue: angular.noop }; // nullModelCtrl
 
-  this.init = function( ngModelCtrl_, inputs ) {
+  this.init = function( ngModelCtrl_, element, spans ) {
     ngModelCtrl = ngModelCtrl_;
-    ngModelCtrl.$render = this.render;
 
-    var valueInputEl = inputs.eq(0);
+    $scope.valueInputEl = element.find('input').eq(0);
+    $scope.measureEl = element.find('span').eq(0);
 
     var mousewheel = angular.isDefined($attrs.mousewheel) ? $scope.$parent.$eval($attrs.mousewheel) : numberpickerConfig.mousewheel;
     if ( mousewheel ) {
-      this.setupMousewheelEvents( valueInputEl );
+      this.setupMousewheelEvents();
     }
 
     $scope.readonlyInput = angular.isDefined($attrs.readonlyInput) ? $scope.$parent.$eval($attrs.readonlyInput) : numberpickerConfig.readonlyInput;
-    this.setupInputEvents( valueInputEl );
+    this.setupInputEvents();
+    
+    // Set the initial value of the input element
+    refresh();
   };
 
   var valueStep = numberpickerConfig.valueStep;
@@ -54,11 +58,16 @@ angular.module('ui.bootstrap.numberpicker', [])
   }
   
   function isNumber(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
+    return !isNaN(parseInt(n)) && isFinite(n);
+  }
+  
+  function resizeValueInput() {
+    $scope.measureEl.html($scope.pickerValue);
+    $scope.valueInputEl.css('width', ($scope.measureEl[0].offsetWidth + 30) + 'px');
   }
 
   // Respond on mousewheel spin
-  this.setupMousewheelEvents = function( valueInputEl ) {
+  this.setupMousewheelEvents = function() {
     var isScrollingUp = function(e) {
       if (e.originalEvent) {
         e = e.originalEvent;
@@ -68,82 +77,57 @@ angular.module('ui.bootstrap.numberpicker', [])
       return (e.detail || delta > 0);
     };
 
-    valueInputEl.bind('mousewheel wheel', function(e) {
+    $scope.valueInputEl.bind('mousewheel wheel', function(e) {
       $scope.$apply( (isScrollingUp(e)) ? $scope.incrementValue() : $scope.decrementValue() );
       e.preventDefault();
     });
   };
 
-  this.setupInputEvents = function( valueInputEl ) {
+  this.setupInputEvents = function() {
     if ( $scope.readonlyInput ) {
       $scope.updateValue = angular.noop;
       return;
     }
-
-    var invalidate = function(invalidValue) {
-      ngModelCtrl.$setViewValue( null );
-      ngModelCtrl.$setValidity('number', false);
-      if (angular.isDefined(invalidValue)) {
-        $scope.invalidValue = invalidValue;
-      }
-    };
-
+    
     $scope.updateValue = function() {
-      var pickerValue = isNumber($scope.pickerValue) ? parseInt($scope.
-pickerValue, 10) : undefined;
-
-      if ( angular.isDefined(pickerValue) ) {
-        selected = pickerValue;
-        refresh( 'm' );
-      } else {
-        invalidate(true);
+      // If the value is edited using the keyboard, visually indicate if it isn't a valid number
+      if (!isNumber($scope.pickerValue)) {
+        $scope.invalidValue = true;
       }
+      // Resize the input while the value is edited using the keyboard
+      resizeValueInput();
     };
     
-    // Ensure we're within the extrema when editing the value with the keyboard
-    valueInputEl.bind('blur', function(e) {
-      if (!$scope.invalidValue) {
-        $scope.$apply( function() {
-          $scope.pickerValue = ensureExtrema($scope.pickerValue);
-        });
-      }
+    // Wait until the input box loses focus to validate/update the value
+    $scope.valueInputEl.bind('blur', function(e) {
+      $scope.$apply( function() {
+        // Only update the value if it's valid
+        if (ngModelCtrl.$valid) {
+          newPickerValue = ensureExtrema(parseInt($scope.pickerValue));
+        }
+        refresh();
+      });
     });
-  };
-
-  this.render = function() {
-    var number = ngModelCtrl.$modelValue ? ngModelCtrl.$modelValue : null;
-
-    if ( isNaN(number) ) {
-      ngModelCtrl.$setValidity('number', false);
-      $log.error('Numberpicker directive: "ng-model" value must be a number.');
-    } else {
-      if ( number ) {
-        selected = number;
-      }
-      refresh();
-    }
   };
 
   // Call internally when we know that model is valid.
   function refresh( keyboardChange ) {
-    makeValid();
-    ngModelCtrl.$setViewValue( selected );
-    $scope.pickerValue = selected;
-  }
-
-  function makeValid() {
-    ngModelCtrl.$setValidity('number', true);
     $scope.invalidValue = false;
+    ngModelCtrl.$setViewValue( newPickerValue );
+    // Update the view
+    $scope.pickerValue = newPickerValue;
+    // Resize the input element
+    resizeValueInput();
   }
 
   $scope.incrementValue = function() {
-    selected += valueStep;
-    selected = ensureExtrema(selected);
+    newPickerValue += valueStep;
+    newPickerValue = ensureExtrema(newPickerValue);
     refresh();
   };
   $scope.decrementValue = function() {
-    selected -= valueStep;
-    selected = ensureExtrema(selected);
+    newPickerValue -= valueStep;
+    newPickerValue = ensureExtrema(newPickerValue);
     refresh();
   };
 }])
@@ -160,7 +144,7 @@ pickerValue, 10) : undefined;
       var numberpickerCtrl = ctrls[0], ngModelCtrl = ctrls[1];
 
       if ( ngModelCtrl ) {
-        numberpickerCtrl.init( ngModelCtrl, element.find('input') );
+        numberpickerCtrl.init(ngModelCtrl, element);
       }
     }
   };

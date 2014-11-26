@@ -1,10 +1,10 @@
 <table>
 	<tbody>
 		<tr class="text-center">
-			<td><a ng-click="incrementValue()" class="btn btn-link"><span class="glyphicon glyphicon-chevron-up"></span></a></td>
+			<td><span style="position:absolute;top:-9999px;" id="measureText"></span><a ng-click="incrementValue()" class="btn btn-link"><span class="glyphicon glyphicon-chevron-up"></span></a></td>
 		</tr>
 		<tr>
-			<td style="width:50px;" class="form-group" ng-class="{'has-error': invalidValue}">
+			<td class="form-group" ng-class="{'has-error': invalidValue}">
 				<input type="text" ng-model="pickerValue" ng-change="updateValue()" class="form-control text-center" ng-readonly="readonlyInput">
 			</td>
 		</tr>
@@ -13,3 +13,4 @@
 		</tr>
 	</tbody>
 </table>
+

@@ -12,7 +12,7 @@
   
 <div ng-controller="NumberpickerDemoCtrl">
 
-  <numberpicker ng-model="mynumber" ng-change="changed()" value-step="valueStep" min-value="minValue" max-value="maxValue" default-value="defaultValue"></numberpicker>
+  <numberpicker ng-model="mynumber" ng-change="changed()" value-step="100" min-value="-200000" max-value="200000" default-value="defaultValue"></numberpicker>
 
   <pre class="alert alert-info">Number is: {{mynumber}}</pre>
 
@@ -22,6 +22,8 @@
       <select class="form-control" ng-model="valueStep" ng-options="opt for opt in options.valueStep"></select>
     </div>
   </div>
+<!--  
+  <numberpicker ng-model="mynumber2" ng-change="changed()" value-step="100" min-value="-200000" max-value="200000" default-value="defaultValue"></numberpicker>
 
 <!--
   <div class="row"> 
