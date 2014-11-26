@@ -1,0 +1,47 @@
+<!doctype html>
+<html ng-app="ui.bootstrap.demo">
+  <head>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="src/numberpicker/numberpicker.js"></script>
+    <script src="demo.js"></script>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  </head>
+  <body>
+  
+  
+<div ng-controller="NumberpickerDemoCtrl">
+
+  <numberpicker ng-model="mynumber" ng-change="changed()" value-step="valueStep" min-value="minValue" max-value="maxValue" default-value="defaultValue"></numberpicker>
+
+  <pre class="alert alert-info">Number is: {{mynumber}}</pre>
+
+  <div class="row"> 
+    <div class="col-xs-6">
+        Value step is:
+      <select class="form-control" ng-model="valueStep" ng-options="opt for opt in options.valueStep"></select>
+    </div>
+  </div>
+
+<!--
+  <div class="row"> 
+    <div class="col-xs-6">
+        Hours step is:
+      <select class="form-control" ng-model="hstep" ng-options="opt for opt in options.hstep"></select>
+    </div>
+    <div class="col-xs-6">
+        Minutes step is:
+      <select class="form-control" ng-model="mstep" ng-options="opt for opt in options.mstep"></select>
+    </div>
+  </div>
+
+  <hr>
+
+  <button class="btn btn-info" ng-click="toggleMode()">12H / 24H</button>
+  <button class="btn btn-default" ng-click="update()">Set to 14:00</button>
+  <button class="btn btn-danger" ng-click="clear()">Clear</button>
+-->
+
+</div>
+  </body>
+</html>
