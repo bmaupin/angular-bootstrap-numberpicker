@@ -93,6 +93,8 @@ angular.module('ui.bootstrap.numberpicker', [])
       // If the value is edited using the keyboard, visually indicate if it isn't a valid number
       if (!isNumber($scope.pickerValue)) {
         $scope.invalidValue = true;
+      } else {
+        $scope.invalidValue = false;
       }
       // Resize the input while the value is edited using the keyboard
       resizeValueInput();
@@ -102,7 +104,7 @@ angular.module('ui.bootstrap.numberpicker', [])
     $scope.valueInputEl.bind('blur', function(e) {
       $scope.$apply( function() {
         // Only update the value if it's valid
-        if (ngModelCtrl.$valid) {
+        if (!$scope.invalidValue) {
           newPickerValue = ensureExtrema(parseInt($scope.pickerValue));
         }
         refresh();
