@@ -113,10 +113,11 @@ angular.module('ui.bootstrap.numberpicker', [])
   };
 
   // Call internally when we know that model is valid.
-  function refresh( keyboardChange ) {
+  function refresh() {
     $scope.invalidValue = false;
+    // Update the model
     ngModelCtrl.$setViewValue( newPickerValue );
-    // Update the view
+    // Update the template model
     $scope.pickerValue = newPickerValue;
     // Resize the input element
     resizeValueInput();
