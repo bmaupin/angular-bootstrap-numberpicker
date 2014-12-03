@@ -60,11 +60,6 @@ angular.module('ui.bootstrap.numberpicker', [])
   function isNumber(n) {
     return !isNaN(parseInt(n)) && isFinite(n);
   }
-  
-  function resizeValueInput() {
-    $scope.measureEl.html($scope.pickerValue);
-    $scope.valueInputEl.css('width', ($scope.measureEl[0].offsetWidth + 30) + 'px');
-  }
 
   // Respond on mousewheel spin
   this.setupMousewheelEvents = function() {
@@ -96,8 +91,6 @@ angular.module('ui.bootstrap.numberpicker', [])
       } else {
         $scope.invalidValue = false;
       }
-      // Resize the input while the value is edited using the keyboard
-      resizeValueInput();
     };
     
     // Wait until the input box loses focus to validate/update the value
@@ -119,8 +112,6 @@ angular.module('ui.bootstrap.numberpicker', [])
     ngModelCtrl.$setViewValue( newPickerValue );
     // Update the template model
     $scope.pickerValue = newPickerValue;
-    // Resize the input element
-    resizeValueInput();
   }
 
   $scope.incrementValue = function() {
@@ -150,5 +141,24 @@ angular.module('ui.bootstrap.numberpicker', [])
         numberpickerCtrl.init(ngModelCtrl, element);
       }
     }
+  };
+})
+
+// Resize the input element based on its content
+.directive('numberpickerInput', function () {
+  return {
+    restrict: 'A',
+    link: function(scope, element, attrs) {
+      var elInput = element.find('input');
+      var elSpan = element.find('span');
+      elSpan.html(elInput.text());
+
+      scope.$watch('pickerValue', function(pickerValue) {
+        if(pickerValue) {
+          elSpan.html(elInput.val());
+          elInput.css('width', (elSpan[0].offsetWidth + 30) + 'px');
+        }
+      });
+    },
   };
 });
