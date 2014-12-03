@@ -144,7 +144,7 @@ angular.module('ui.bootstrap.numberpicker', [])
 })
 
 // Resize the input element based on its content
-.directive('resizableInput', function ($compile) {
+.directive('resizableInput', function () {
   return {
     restrict: 'A',
     link: function(scope, element, attrs) {
