@@ -19,16 +19,15 @@ angular.module('ui.bootstrap.numberpicker', [])
   this.init = function( ngModelCtrl_, element, spans ) {
     ngModelCtrl = ngModelCtrl_;
 
-    $scope.valueInputEl = element.find('input').eq(0);
-    $scope.measureEl = element.find('span').eq(0);
+    var valueInputEl = element.find('input').eq(0);
 
     var mousewheel = angular.isDefined($attrs.mousewheel) ? $scope.$parent.$eval($attrs.mousewheel) : numberpickerConfig.mousewheel;
     if ( mousewheel ) {
-      this.setupMousewheelEvents();
+      this.setupMousewheelEvents(valueInputEl);
     }
 
     $scope.readonlyInput = angular.isDefined($attrs.readonlyInput) ? $scope.$parent.$eval($attrs.readonlyInput) : numberpickerConfig.readonlyInput;
-    this.setupInputEvents();
+    this.setupInputEvents(valueInputEl);
     
     // Set the initial value of the input element
     refresh();
@@ -62,7 +61,7 @@ angular.module('ui.bootstrap.numberpicker', [])
   }
 
   // Respond on mousewheel spin
-  this.setupMousewheelEvents = function() {
+  this.setupMousewheelEvents = function(valueInputEl) {
     var isScrollingUp = function(e) {
       if (e.originalEvent) {
         e = e.originalEvent;
@@ -72,13 +71,13 @@ angular.module('ui.bootstrap.numberpicker', [])
       return (e.detail || delta > 0);
     };
 
-    $scope.valueInputEl.bind('mousewheel wheel', function(e) {
+    valueInputEl.bind('mousewheel wheel', function(e) {
       $scope.$apply( (isScrollingUp(e)) ? $scope.incrementValue() : $scope.decrementValue() );
       e.preventDefault();
     });
   };
 
-  this.setupInputEvents = function() {
+  this.setupInputEvents = function(valueInputEl) {
     if ( $scope.readonlyInput ) {
       $scope.updateValue = angular.noop;
       return;
@@ -94,7 +93,7 @@ angular.module('ui.bootstrap.numberpicker', [])
     };
     
     // Wait until the input box loses focus to validate/update the value
-    $scope.valueInputEl.bind('blur', function(e) {
+    valueInputEl.bind('blur', function(e) {
       $scope.$apply( function() {
         // Only update the value if it's valid
         if (!$scope.invalidValue) {
