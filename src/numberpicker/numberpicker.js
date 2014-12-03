@@ -16,18 +16,18 @@ angular.module('ui.bootstrap.numberpicker', [])
   var newPickerValue = angular.isDefined($attrs.defaultValue) ? $scope.$parent.$eval($attrs.defaultValue) : numberpickerConfig.defaultValue,
       ngModelCtrl = { $setViewValue: angular.noop }; // nullModelCtrl
 
-  this.init = function( ngModelCtrl_, element, spans ) {
+  this.init = function(ngModelCtrl_, element) {
     ngModelCtrl = ngModelCtrl_;
 
     var valueInputEl = element.find('input').eq(0);
 
     var mousewheel = angular.isDefined($attrs.mousewheel) ? $scope.$parent.$eval($attrs.mousewheel) : numberpickerConfig.mousewheel;
-    if ( mousewheel ) {
+    if (mousewheel) {
       this.setupMousewheelEvents(valueInputEl);
     }
 
     $scope.readonlyInput = angular.isDefined($attrs.readonlyInput) ? $scope.$parent.$eval($attrs.readonlyInput) : numberpickerConfig.readonlyInput;
-    this.setupInputEvents();
+    this.setupInputEvents(valueInputEl);
     
     // Set the initial value of the input element
     refresh();
@@ -72,13 +72,13 @@ angular.module('ui.bootstrap.numberpicker', [])
     };
 
     valueInputEl.bind('mousewheel wheel', function(e) {
-      $scope.$apply( (isScrollingUp(e)) ? $scope.incrementValue() : $scope.decrementValue() );
+      $scope.$apply((isScrollingUp(e)) ? $scope.incrementValue() : $scope.decrementValue());
       e.preventDefault();
     });
   };
 
   this.setupInputEvents = function(valueInputEl) {
-    if ( $scope.readonlyInput ) {
+    if ($scope.readonlyInput) {
       $scope.updateValue = angular.noop;
       return;
     }
@@ -94,7 +94,7 @@ angular.module('ui.bootstrap.numberpicker', [])
     
     // Wait until the input box loses focus to validate/update the value
     valueInputEl.bind('blur', function(e) {
-      $scope.$apply( function() {
+      $scope.$apply(function() {
         // Only update the value if it's valid
         if (!$scope.invalidValue) {
           newPickerValue = ensureExtrema(parseInt($scope.pickerValue));
@@ -108,7 +108,7 @@ angular.module('ui.bootstrap.numberpicker', [])
   function refresh() {
     $scope.invalidValue = false;
     // Update the model
-    ngModelCtrl.$setViewValue( newPickerValue );
+    ngModelCtrl.$setViewValue(newPickerValue);
     // Update the template model
     $scope.pickerValue = newPickerValue;
   }
@@ -136,7 +136,7 @@ angular.module('ui.bootstrap.numberpicker', [])
     link: function(scope, element, attrs, ctrls) {
       var numberpickerCtrl = ctrls[0], ngModelCtrl = ctrls[1];
 
-      if ( ngModelCtrl ) {
+      if (ngModelCtrl) {
         numberpickerCtrl.init(ngModelCtrl, element);
       }
     }
