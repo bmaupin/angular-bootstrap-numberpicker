@@ -144,18 +144,17 @@ angular.module('ui.bootstrap.numberpicker', [])
 })
 
 // Resize the input element based on its content
-.directive('numberpickerInput', function () {
+.directive('resizableInput', function ($compile) {
   return {
     restrict: 'A',
     link: function(scope, element, attrs) {
-      var elInput = element.find('input');
-      var elSpan = element.find('span');
-      elSpan.html(elInput.text());
+      var elSpan = angular.element('<span style="position:absolute;top:-9999px;"></span>');
+      element.after(elSpan);
 
       scope.$watch('pickerValue', function(pickerValue) {
         if(pickerValue) {
-          elSpan.html(elInput.val());
-          elInput.css('width', (elSpan[0].offsetWidth + 30) + 'px');
+          elSpan.html(element.val());
+          element.css('width', (elSpan[0].offsetWidth + 30) + 'px');
         }
       });
     },
