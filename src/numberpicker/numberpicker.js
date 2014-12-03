@@ -21,11 +21,6 @@ angular.module('ui.bootstrap.numberpicker', [])
 
     var valueInputEl = element.find('input').eq(0);
 
-    var mousewheel = angular.isDefined($attrs.mousewheel) ? $scope.$parent.$eval($attrs.mousewheel) : numberpickerConfig.mousewheel;
-    if (mousewheel) {
-      this.setupMousewheelEvents(valueInputEl);
-    }
-
     $scope.readonlyInput = angular.isDefined($attrs.readonlyInput) ? $scope.$parent.$eval($attrs.readonlyInput) : numberpickerConfig.readonlyInput;
     this.setupInputEvents(valueInputEl);
     
@@ -59,23 +54,6 @@ angular.module('ui.bootstrap.numberpicker', [])
   function isNumber(n) {
     return !isNaN(parseInt(n)) && isFinite(n);
   }
-
-  // Respond on mousewheel spin
-  this.setupMousewheelEvents = function(valueInputEl) {
-    var isScrollingUp = function(e) {
-      if (e.originalEvent) {
-        e = e.originalEvent;
-      }
-      //pick correct delta variable depending on event
-      var delta = (e.wheelDelta) ? e.wheelDelta : -e.deltaY;
-      return (e.detail || delta > 0);
-    };
-
-    valueInputEl.bind('mousewheel wheel', function(e) {
-      $scope.$apply((isScrollingUp(e)) ? $scope.incrementValue() : $scope.decrementValue());
-      e.preventDefault();
-    });
-  };
 
   this.setupInputEvents = function(valueInputEl) {
     if ($scope.readonlyInput) {
@@ -159,4 +137,28 @@ angular.module('ui.bootstrap.numberpicker', [])
       });
     },
   };
-});
+})
+
+// Respond on mousewheel spin
+.directive('numberpickerInput', ['numberpickerConfig', function (numberpickerConfig) {
+  return {
+    restrict: 'A',
+    link: function(scope, element, attrs) {
+      if (angular.isDefined(attrs.mousewheel) ? scope.$parent.$eval(attrs.mousewheel) : numberpickerConfig.mousewheel) {
+        var isScrollingUp = function(e) {
+          if (e.originalEvent) {
+            e = e.originalEvent;
+          }
+          //pick correct delta variable depending on event
+          var delta = (e.wheelDelta) ? e.wheelDelta : -e.deltaY;
+          return (e.detail || delta > 0);
+        };
+
+        element.bind('mousewheel wheel', function(e) {
+          scope.$apply((isScrollingUp(e)) ? scope.incrementValue() : scope.decrementValue());
+          e.preventDefault();
+        });
+      }
+    },
+  };
+}]);
