@@ -27,7 +27,7 @@ angular.module('ui.bootstrap.numberpicker', [])
     }
 
     $scope.readonlyInput = angular.isDefined($attrs.readonlyInput) ? $scope.$parent.$eval($attrs.readonlyInput) : numberpickerConfig.readonlyInput;
-    this.setupInputEvents(valueInputEl);
+    this.setupInputEvents();
     
     // Set the initial value of the input element
     refresh();
