@@ -1,4 +1,5 @@
 angular.module('ui.bootstrap.demo', ['ui.bootstrap']).controller('NumberpickerDemoCtrl', function ($scope, $log) {
+/*
   $scope.valueStep = 5;
   $scope.minValue = -1000;
   $scope.maxValue = 1000;
@@ -9,6 +10,7 @@ angular.module('ui.bootstrap.demo', ['ui.bootstrap']).controller('NumberpickerDe
     maxValue: [25, 50, 100],
     valueStep: [1, 5, 10, 15, 25, 30]
   };
+*/  
 });
 
 

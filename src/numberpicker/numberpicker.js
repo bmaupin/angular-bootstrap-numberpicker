@@ -35,6 +35,8 @@ angular.module('ui.bootstrap.numberpicker', [])
     });
   }
   
+  this.mousewheel = angular.isDefined($attrs.mousewheel) ? $scope.$parent.$eval($attrs.mousewheel) : numberpickerConfig.mousewheel;
+  
   var minValue = angular.isDefined($attrs.minValue) ? $scope.$parent.$eval($attrs.minValue) : numberpickerConfig.minValue;
   var maxValue = angular.isDefined($attrs.maxValue) ? $scope.$parent.$eval($attrs.maxValue) : numberpickerConfig.maxValue;
   if (minValue > maxValue) {
@@ -143,8 +145,9 @@ angular.module('ui.bootstrap.numberpicker', [])
 .directive('numberpickerInput', ['numberpickerConfig', function (numberpickerConfig) {
   return {
     restrict: 'A',
-    link: function(scope, element, attrs) {
-      if (angular.isDefined(attrs.mousewheel) ? scope.$parent.$eval(attrs.mousewheel) : numberpickerConfig.mousewheel) {
+    require: '^numberpicker',
+    link: function(scope, element, attrs, ctrl) {
+      if (ctrl.mousewheel) {
         var isScrollingUp = function(e) {
           if (e.originalEvent) {
             e = e.originalEvent;
