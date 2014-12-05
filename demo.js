@@ -1,4 +1,4 @@
-angular.module('ui.bootstrap.demo', ['ui.bootstrap']).controller('NumberpickerDemoCtrl', function ($scope, $log) {
+angular.module('ui.bootstrap.demo', ['ui.bootstrap.numberpicker']).controller('NumberpickerDemoCtrl', function ($scope, $log) {
 /*
   $scope.valueStep = 5;
   $scope.minValue = -1000;

@@ -1,5 +1,3 @@
-// Inject ourselves into ui.bootstrap
-angular.module('ui.bootstrap', ['ui.bootstrap.numberpicker']);
 angular.module('ui.bootstrap.numberpicker', [])
 
 .constant('numberpickerConfig', {
