@@ -4,24 +4,21 @@ angular.module('angular-bootstrap-numberpicker', [])
   defaultValue: 0,
   valueStep: 1,
 })
-
+/*
 .factory('NumberPickerSvc', function() {
   return {
   };
 })
-
+*/
 .controller('NumberpickerCtrl', ['$scope', function($scope) {
-  this.init = function(ngModelCtrl) {
-    this.ngModelCtrl = ngModelCtrl;
-    
-    console.log(ngModelCtrl.$modelValue);
-    console.log(ngModelCtrl.$viewValue);
+  ngModelCtrl = { $setViewValue: angular.noop }; // nullModelCtrl
+
+  this.init = function(_ngModelCtrl) {
+    ngModelCtrl = _ngModelCtrl;
   };
   
   $scope.updateValue = function() {
-    console.log($scope.pickerValue);
-    console.log(this.ngModelCtrl.$modelValue);
-//    console.log(Object.keys($scope));
+    ngModelCtrl.$setViewValue($scope.pickerValue);
   };
 }])
 
