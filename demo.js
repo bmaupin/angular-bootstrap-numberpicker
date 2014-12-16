@@ -1,1 +1,1 @@
-angular.module('numberpicker-demo', ['angular-bootstrap-numberpicker']).controller('NumberpickerDemoCtrl', function () {});
+angular.module('numberpicker-demo', ['angularBootstrapNumberpicker']).controller('NumberpickerDemoCtrl', function () {});
