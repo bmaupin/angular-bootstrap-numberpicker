@@ -14,6 +14,7 @@ angular.module('angularBootstrapNumberpicker', [])
   var _value = 0;
   
   $scope.value = function(newValue) {
+    console.log($scope.myForm.value.$valid);
     return angular.isDefined(newValue) ? (_value = newValue) : _value;
   };
 }])
