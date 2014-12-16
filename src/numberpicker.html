@@ -3,9 +3,9 @@
 		<tr>
 			<td><a ng-click="incrementValue()" class="btn btn-link"><span class="glyphicon glyphicon-chevron-up"></span></a></td>
 		</tr>
-		<tr>
+		<tr name="myForm" ng-form>
 			<td>
-				<input type="text" class="form-control" ng-model="value" ng-model-options="{ getterSetter: true, updateOn: 'blur' }">
+				<input type="number" class="form-control" name="value" ng-model="value" ng-model-options="{ getterSetter: true, updateOn: 'blur' }">
 			</td>
 		</tr>
 		<tr>
