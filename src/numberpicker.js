@@ -11,6 +11,11 @@ angular.module('angularBootstrapNumberpicker', [])
 })
 */
 .controller('NumberpickerCtrl', ['$scope', function($scope) {
+  var _value = 0;
+  
+  $scope.value = function(newValue) {
+    return angular.isDefined(newValue) ? (_value = newValue) : _value;
+  };
 }])
 
 .directive('numberpicker', function() {
