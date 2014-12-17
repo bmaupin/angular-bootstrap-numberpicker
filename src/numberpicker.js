@@ -11,11 +11,16 @@ angular.module('angularBootstrapNumberpicker', [])
 })
 */
 .controller('NumberpickerCtrl', ['$scope', function($scope) {
-  var _value = 0;
+  var _value;
   
-  $scope.value = function(newValue) {
-    console.log($scope.myForm.value.$valid);
-    return angular.isDefined(newValue) ? (_value = newValue) : _value;
+  $scope.onBlur = function() {
+    // Store the last valid value in a temporary variable
+    if (angular.isDefined($scope.value)) {
+      _value = $scope.value;
+    // Roll back if the value becomes invalid
+    } else {
+      $scope.value = _value;
+    }
   };
 }])
 
