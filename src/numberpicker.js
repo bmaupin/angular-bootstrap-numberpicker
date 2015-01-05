@@ -10,7 +10,7 @@ angular.module('angularBootstrapNumberpicker', [])
   };
 })
 */
-.controller('NumberpickerCtrl', ['$scope', function($scope) {
+.controller('NumberpickerCtrl', ['$scope', '$attrs', function($scope, $attrs) {
   var _value;
   
   $scope.onBlur = function() {
@@ -22,6 +22,28 @@ angular.module('angularBootstrapNumberpicker', [])
       $scope.value = _value;
     }
   };
+  
+  // Give a visual indicator if the value is outside extrema while editing it
+  // directly
+  $scope.onChange = function() {
+    if ('max' in $attrs) {
+      max = $scope.$eval($attrs.max);
+      if ($scope.value > max) {
+        $scope.myForm.value.$setValidity('max', false);
+      } else {
+        $scope.myForm.value.$setValidity('max', true);
+      }
+    }
+    
+    if ('min' in $attrs) {
+      min = $scope.$eval($attrs.min);
+      if ($scope.value < min) {
+        $scope.myForm.value.$setValidity('min', false);
+      } else {
+        $scope.myForm.value.$setValidity('min', true);
+      }
+    }
+  }
 }])
 
 .directive('numberpicker', function() {
