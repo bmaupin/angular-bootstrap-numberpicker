@@ -21,6 +21,23 @@ angular.module('angularBootstrapNumberpicker', [])
     } else {
       $scope.value = _value;
     }
+    
+    // If outside extrema on blur, set value to max/min
+    if ('max' in $attrs) {
+      max = $scope.$eval($attrs.max);
+      if ($scope.value > max) {
+        $scope.value = max;
+        $scope.myForm.value.$setValidity('max', true);
+      }
+    }
+    
+    if ('min' in $attrs) {
+      min = $scope.$eval($attrs.min);
+      if ($scope.value < min) {
+        $scope.value = min;
+        $scope.myForm.value.$setValidity('min', true);
+      }
+    }
   };
   
   // Give a visual indicator if the value is outside extrema while editing it
