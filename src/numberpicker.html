@@ -15,7 +15,7 @@ input::-webkit-inner-spin-button {
 		</tr>
 		<tr name="myForm" ng-form ng-class="{'has-error': myForm.value.$invalid}">
 			<td>
-				<input type="number" class="form-control" name="value" ng-model="value" ng-blur="onBlur()" ng-change="onChange()">
+				<input type="number" class="form-control" name="value" max="{{max}}" min="{{min}}" ng-model="value">
 			</td>
 		</tr>
 		<tr>
