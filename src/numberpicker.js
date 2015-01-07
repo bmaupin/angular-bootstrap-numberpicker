@@ -22,7 +22,8 @@ angular.module('angularBootstrapNumberpicker', [])
 
 .directive('numberpicker', function() {
   return {
-    controller:'NumberpickerCtrl',
+    restrict: 'E',
+    controller: 'NumberpickerCtrl',
     templateUrl: 'src/numberpicker.html',
   };
 });
