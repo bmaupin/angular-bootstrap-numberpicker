@@ -43,6 +43,7 @@ angular.module('angularBootstrapNumberpicker', [])
   // Give a visual indicator if the value is outside extrema while editing it
   // directly
   $scope.onChange = function() {
+/*  
     if ('max' in $attrs) {
       max = $scope.$eval($attrs.max);
       if ($scope.value > max) {
@@ -60,6 +61,8 @@ angular.module('angularBootstrapNumberpicker', [])
         $scope.myForm.value.$setValidity('min', true);
       }
     }
+    
+*/    
   }
 }])
 
@@ -67,5 +70,23 @@ angular.module('angularBootstrapNumberpicker', [])
   return {
     controller:'NumberpickerCtrl',
     templateUrl: 'src/numberpicker.html',
+    require: ['numberpicker', '?^ngModel'],
+    link: function(scope, elm, attrs, ctrls) {
+      if ('max' in attrs) {
+        var maxValidator = function(value) {
+          max = scope.$eval(attrs.max);
+          if (value > max) {
+            scope.myForm.value.$setValidity('max', false);
+            return undefined;
+          } else {
+            scope.myForm.value.$setValidity('max', true);
+            return value;
+          }
+        };
+      
+        scope.myForm.value.$parsers.push(maxValidator);
+//        scope.myForm.value.$formatters.push(maxValidator);
+      }
+    }
   };
 });
