@@ -4,12 +4,7 @@ angular.module('angularBootstrapNumberpicker', [])
   defaultValue: 0,
   valueStep: 1,
 })
-/*
-.factory('NumberPickerSvc', function() {
-  return {
-  };
-})
-*/
+
 .controller('NumberpickerCtrl', ['$scope', '$attrs', function($scope, $attrs) {
   if ('max' in $attrs) {
     $scope.max = $scope.$eval($attrs.max);
