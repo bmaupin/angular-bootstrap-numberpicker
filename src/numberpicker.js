@@ -5,7 +5,12 @@ angular.module('angularBootstrapNumberpicker', [])
   valueStep: 1,
 })
 
-.controller('NumberpickerCtrl', ['$scope', '$attrs', function($scope, $attrs) {
+.controller('NumberpickerCtrl', ['$scope', '$attrs', 'numberpickerConfig', function($scope, $attrs, numberpickerConfig) {
+  // Set variable defaults and allow them to be overridden
+  if (!angular.isDefined($scope.value)) {
+    $scope.value = numberpickerConfig.defaultValue;
+  }
+
   if ('max' in $attrs) {
     $scope.max = $scope.$eval($attrs.max);
   }
