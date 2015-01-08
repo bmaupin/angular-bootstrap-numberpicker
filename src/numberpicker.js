@@ -12,13 +12,32 @@ angular.module('angularBootstrapNumberpicker', [])
   } else {
     $scope.value = numberpickerConfig.defaultValue;
   }
-
+  
+  var valueStep = numberpickerConfig.valueStep;
+  if ('valueStep' in $attrs) {
+    valueStep = $scope.$eval($attrs.valueStep);
+  }
+  
   if ('max' in $attrs) {
     $scope.max = $scope.$eval($attrs.max);
   }
   
   if ('min' in $attrs) {
     $scope.min = $scope.$eval($attrs.min);
+  }
+  
+  $scope.decrementValue = function() {
+    if (angular.isDefined($scope.min) && $scope.value + valueStep < $scope.min) {
+      return;
+    }
+    $scope.value -= valueStep;
+  }
+  
+  $scope.incrementValue = function() {
+    if (angular.isDefined($scope.max) && $scope.value + valueStep > $scope.max) {
+      return;
+    }
+    $scope.value += valueStep;
   }
 }])
 
