@@ -2,6 +2,7 @@ angular.module('angularBootstrapNumberpicker', [])
 
 .constant('numberpickerConfig', {
   defaultValue: 0,
+  mousewheel: true,
   valueStep: 1,
 })
 
@@ -11,6 +12,11 @@ angular.module('angularBootstrapNumberpicker', [])
     $scope.value = $scope.$eval($attrs.defaultValue);
   } else {
     $scope.value = numberpickerConfig.defaultValue;
+  }
+  
+  this.mousewheel = numberpickerConfig.mousewheel;
+  if ('mousewheel' in $attrs) {
+    valueStep = $scope.$eval($attrs.mousewheel);
   }
   
   var valueStep = numberpickerConfig.valueStep;
@@ -48,7 +54,25 @@ angular.module('angularBootstrapNumberpicker', [])
 .directive('numberpicker', function() {
   return {
     restrict: 'E',
+    require: 'numberpicker',
     controller: 'NumberpickerCtrl',
     templateUrl: 'src/numberpicker.html',
+    link: function(scope, element, attrs, ctrl) {
+      if (ctrl.mousewheel) {
+        var isScrollingUp = function(e) {
+          if (e.originalEvent) {
+            e = e.originalEvent;
+          }
+          //pick correct delta variable depending on event
+          var delta = (e.wheelDelta) ? e.wheelDelta : -e.deltaY;
+          return (e.detail || delta > 0);
+        };
+        
+        element.bind('mousewheel wheel', function(e) {
+          scope.$apply((isScrollingUp(e)) ? scope.incrementValue() : scope.decrementValue());
+          e.preventDefault();
+        });
+      }
+    },
   };
 });
