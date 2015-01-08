@@ -58,6 +58,7 @@ angular.module('angularBootstrapNumberpicker', [])
     controller: 'NumberpickerCtrl',
     templateUrl: 'src/numberpicker.html',
     link: function(scope, element, attrs, ctrl) {
+      // Respond on mousewheel spin
       if (ctrl.mousewheel) {
         var isScrollingUp = function(e) {
           if (e.originalEvent) {
@@ -73,6 +74,24 @@ angular.module('angularBootstrapNumberpicker', [])
           e.preventDefault();
         });
       }
+    },
+  };
+})
+
+// Resize the input element based on its content
+.directive('resizableInput', function () {
+  return {
+    restrict: 'A',
+    link: function(scope, element, attrs) {
+      var elSpan = angular.element('<span style="position:absolute;top:-9999px;"></span>');
+      element.after(elSpan);
+
+      scope.$watch('value', function(value) {
+        if(value) {
+          elSpan.html(element.val());
+          element.css('width', (elSpan[0].offsetWidth + 30) + 'px');
+        }
+      });
     },
   };
 });
