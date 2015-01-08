@@ -7,7 +7,7 @@ angular.module('angularBootstrapNumberpicker', [])
 })
 
 .controller('NumberpickerCtrl', ['$scope', '$attrs', 'numberpickerConfig', function($scope, $attrs, numberpickerConfig) {
-  // Set variable defaults and allow them to be overridden
+  // Set variable defaults and allow them to be overridden in DOM
   if ('defaultValue' in $attrs) {
     $scope.value = $scope.$eval($attrs.defaultValue);
   } else {
@@ -34,18 +34,16 @@ angular.module('angularBootstrapNumberpicker', [])
   
   $scope.decrementValue = function() {
     if (angular.isDefined($scope.min) && $scope.value + valueStep < $scope.min) {
-      return;
-    }
-    if (angular.isDefined($scope.value)) {
+      $scope.value = $scope.min;
+    } else if (angular.isDefined($scope.value)) {
       $scope.value -= valueStep;
     }
   }
   
   $scope.incrementValue = function() {
     if (angular.isDefined($scope.max) && $scope.value + valueStep > $scope.max) {
-      return;
-    }
-    if (angular.isDefined($scope.value)) {
+      $scope.value = $scope.max;
+    } else if (angular.isDefined($scope.value)) {
       $scope.value += valueStep;
     }
   }
@@ -85,7 +83,7 @@ angular.module('angularBootstrapNumberpicker', [])
     link: function(scope, element, attrs) {
       var elSpan = angular.element('<span style="position:absolute;top:-9999px;"></span>');
       element.after(elSpan);
-
+      
       scope.$watch('value', function(value) {
         if(value) {
           elSpan.html(element.val());
