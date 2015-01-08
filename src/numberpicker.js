@@ -30,14 +30,18 @@ angular.module('angularBootstrapNumberpicker', [])
     if (angular.isDefined($scope.min) && $scope.value + valueStep < $scope.min) {
       return;
     }
-    $scope.value -= valueStep;
+    if (angular.isDefined($scope.value)) {
+      $scope.value -= valueStep;
+    }
   }
   
   $scope.incrementValue = function() {
     if (angular.isDefined($scope.max) && $scope.value + valueStep > $scope.max) {
       return;
     }
-    $scope.value += valueStep;
+    if (angular.isDefined($scope.value)) {
+      $scope.value += valueStep;
+    }
   }
 }])
 
