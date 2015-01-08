@@ -10,7 +10,7 @@ input::-webkit-inner-spin-button {
 </style>
 <table>
 	<tbody>
-		<tr>
+		<tr class="text-center">
 			<td><a ng-click="incrementValue()" class="btn btn-link"><span class="glyphicon glyphicon-chevron-up"></span></a></td>
 		</tr>
 		<tr name="myForm" ng-form ng-class="{'has-error': myForm.value.$invalid}">
@@ -18,7 +18,7 @@ input::-webkit-inner-spin-button {
 				<input type="number" class="form-control" name="value" max="{{max}}" min="{{min}}" ng-model="value" resizable-input>
 			</td>
 		</tr>
-		<tr>
+		<tr class="text-center">
 			<td><a ng-click="decrementValue()" class="btn btn-link"><span class="glyphicon glyphicon-chevron-down"></span></a></td>
 		</tr>
 	</tbody>
