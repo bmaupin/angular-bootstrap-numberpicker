@@ -84,9 +84,9 @@ angular.module('angularBootstrapNumberpicker', [])
       var elSpan = angular.element('<span style="position:absolute;top:-9999px;"></span>');
       element.after(elSpan);
       
-      scope.$watch('value', function(value) {
-        if(value) {
-          elSpan.html(element.val());
+      scope.$watch('myForm.value.$viewValue', function(value) {
+        if (value) {
+          elSpan.html(value);
           element.css('width', (elSpan[0].offsetWidth + 30) + 'px');
         }
       });
