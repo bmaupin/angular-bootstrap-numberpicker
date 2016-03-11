@@ -1,16 +1,16 @@
 {
-  "author": "https://github.com/bmaupin",
   "name": "angular-bootstrap-numberpicker",
   "version": "0.1.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/bmaupin/angular-bootstrap-numberpicker.git"
+    "url": "https://github.com/bmaupin/angular-bootstrap-numberpicker.git"
   },
+  "author": "https://github.com/bmaupin",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/bmaupin/angular-bootstrap-numberpicker/issues"
   },
   "devDependencies": {
     "grunt": "~0.4.5"
-  },
-  "license": "MIT"
+  }
 }
