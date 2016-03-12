@@ -38,7 +38,7 @@ angular.module('angularBootstrapNumberpicker', [])
     } else if (angular.isDefined($scope.value)) {
       $scope.value -= valueStep;
     }
-  }
+  };
   
   $scope.incrementValue = function() {
     if (angular.isDefined($scope.max) && $scope.value + valueStep > $scope.max) {
@@ -46,7 +46,7 @@ angular.module('angularBootstrapNumberpicker', [])
     } else if (angular.isDefined($scope.value)) {
       $scope.value += valueStep;
     }
-  }
+  };
 }])
 
 .directive('numberpicker', function() {
