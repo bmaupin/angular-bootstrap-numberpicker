@@ -9,6 +9,9 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     dist: 'dist',
+    meta: {
+      modules: 'angular.module("angularBootstrapNumberpicker", ["<%= templateModule %>", "angularBootstrapNumberpickerSource"]);',
+    },
     clean: {
       dist: {
         src: [], //src filled in by build task
@@ -17,6 +20,9 @@ module.exports = function(grunt) {
     // Combine the template html.js file with the source .js file
     concat: {
       dist: {
+        options: {
+          banner: '<%= meta.modules %>\n\n'
+        },
         src: [], //src filled in by build task
         dest: '<%= dist %>/<%= pkg.name %>-<%= pkg.version %>.js'
       },
@@ -54,6 +60,9 @@ module.exports = function(grunt) {
   grunt.registerTask('build', 'Create build files', function() {
     var srcFiles = grunt.file.expand('src/*.js');
     var tpljsFiles = grunt.file.expand('src/*.html.js');
+
+    grunt.config('templateModule', grunt.file.expand('src/*.html'));
+
     //Set the concat-with-templates task to concat the given src & tpl modules
     grunt.config('concat.dist.src', grunt.config('concat.dist.src')
                  .concat(srcFiles).concat(tpljsFiles));

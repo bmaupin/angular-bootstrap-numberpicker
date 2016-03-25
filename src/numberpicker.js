@@ -1,4 +1,4 @@
-angular.module('angularBootstrapNumberpicker', [])
+angular.module('angularBootstrapNumberpickerSource', [])
 
 .constant('numberpickerConfig', {
   defaultValue: 0,
