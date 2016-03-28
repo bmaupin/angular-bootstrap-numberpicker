@@ -52,12 +52,14 @@ angular.module('angularBootstrapNumberpickerSource', [])
 .directive('numberpicker', function() {
   return {
     restrict: 'E',
-    require: 'numberpicker',
+    require: ['numberpicker', '?^ngModel'],
     controller: 'NumberpickerCtrl',
     templateUrl: 'src/numberpicker.html',
-    link: function(scope, element, attrs, ctrl) {
+    link: function(scope, element, attrs, controllers) {
+      var numberpickerCtrl = controllers[0], ngModelCtrl = controllers[1];
+
       // Respond on mousewheel spin
-      if (ctrl.mousewheel) {
+      if (numberpickerCtrl.mousewheel) {
         var isScrollingUp = function(e) {
           if (e.originalEvent) {
             e = e.originalEvent;
@@ -72,6 +74,12 @@ angular.module('angularBootstrapNumberpickerSource', [])
           e.preventDefault();
         });
       }
+
+      // Make ng-change work
+      // http://stackoverflow.com/a/25973789/399105
+      scope.$watch('myForm.value.$viewValue', function() {
+        ngModelCtrl.$setViewValue(scope.value);
+      });
     },
   };
 })
