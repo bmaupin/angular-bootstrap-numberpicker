@@ -7,23 +7,33 @@ angular.module('angularBootstrapNumberpickerSource', [])
 })
 
 .controller('NumberpickerCtrl', ['$scope', '$attrs', 'numberpickerConfig', function($scope, $attrs, numberpickerConfig) {
-  // Set variable defaults and allow them to be overridden in DOM
-  if ('defaultValue' in $attrs) {
+  // Set variable defaults and allow them to be overridden
+  // Order of preference is: 1. scope 2. DOM attributes 3. config constants
+  if ('defaultValue' in $scope) {
+    $scope.value = $scope.defaultValue;
+  } else if ('defaultValue' in $attrs) {
     $scope.value = $scope.$eval($attrs.defaultValue);
   } else {
     $scope.value = numberpickerConfig.defaultValue;
   }
   
-  this.mousewheel = numberpickerConfig.mousewheel;
-  if ('mousewheel' in $attrs) {
-    valueStep = $scope.$eval($attrs.mousewheel);
+  if (!('mousewheel' in $scope)) {
+    if ('mousewheel' in $attrs) {
+      $scope.mousewheel = $scope.$eval($attrs.mousewheel);
+    } else {
+      $scope.mousewheel = numberpickerConfig.mousewheel;
+    }
+  }
+
+  if (!('valueStep' in $scope)) {
+    if ('valueStep' in $attrs) {
+      $scope.valueStep = $scope.$eval($attrs.valueStep);
+    } else {
+      $scope.valueStep = numberpickerConfig.valueStep;
+    }
   }
   
-  var valueStep = numberpickerConfig.valueStep;
-  if ('valueStep' in $attrs) {
-    valueStep = $scope.$eval($attrs.valueStep);
-  }
-  
+  // Don't set a default for min and max
   if ('max' in $attrs) {
     $scope.max = $scope.$eval($attrs.max);
   }
@@ -33,18 +43,18 @@ angular.module('angularBootstrapNumberpickerSource', [])
   }
   
   $scope.decrementValue = function() {
-    if (angular.isDefined($scope.min) && $scope.value - valueStep < $scope.min) {
+    if (angular.isDefined($scope.min) && $scope.value - $scope.valueStep < $scope.min) {
       $scope.value = $scope.min;
     } else if (angular.isDefined($scope.value)) {
-      $scope.value -= valueStep;
+      $scope.value -= $scope.valueStep;
     }
   };
   
   $scope.incrementValue = function() {
-    if (angular.isDefined($scope.max) && $scope.value + valueStep > $scope.max) {
+    if (angular.isDefined($scope.max) && $scope.value + $scope.valueStep > $scope.max) {
       $scope.value = $scope.max;
     } else if (angular.isDefined($scope.value)) {
-      $scope.value += valueStep;
+      $scope.value += $scope.valueStep;
     }
   };
 }])
@@ -52,14 +62,12 @@ angular.module('angularBootstrapNumberpickerSource', [])
 .directive('numberpicker', function() {
   return {
     restrict: 'E',
-    require: ['numberpicker', '?^ngModel'],
+    require: '?^ngModel',
     controller: 'NumberpickerCtrl',
     templateUrl: 'src/numberpicker.html',
-    link: function(scope, element, attrs, controllers) {
-      var numberpickerCtrl = controllers[0], ngModelCtrl = controllers[1];
-
+    link: function(scope, element, attrs, ctrl) {
       // Respond on mousewheel spin
-      if (numberpickerCtrl.mousewheel) {
+      if (scope.mousewheel) {
         var isScrollingUp = function(e) {
           if (e.originalEvent) {
             e = e.originalEvent;
@@ -78,7 +86,7 @@ angular.module('angularBootstrapNumberpickerSource', [])
       // Make ng-change work
       // http://stackoverflow.com/a/25973789/399105
       scope.$watch('myForm.value.$viewValue', function() {
-        ngModelCtrl.$setViewValue(scope.value);
+        ctrl.$setViewValue(scope.value);
       });
     },
   };
