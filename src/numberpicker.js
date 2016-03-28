@@ -33,7 +33,7 @@ angular.module('angularBootstrapNumberpickerSource', [])
   }
   
   $scope.decrementValue = function() {
-    if (angular.isDefined($scope.min) && $scope.value + valueStep < $scope.min) {
+    if (angular.isDefined($scope.min) && $scope.value - valueStep < $scope.min) {
       $scope.value = $scope.min;
     } else if (angular.isDefined($scope.value)) {
       $scope.value -= valueStep;
