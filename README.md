@@ -5,6 +5,9 @@ Number picker for Angular UI Bootstrap
 
 See it in use here: http://bmaupin.github.io/
 
+Screenshot:  
+![screenshot](screenshot.png)
+
 To build:
 
 1. Install Node.js
