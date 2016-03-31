@@ -5,8 +5,8 @@
   </head>
   <body>
     <div ng-controller="NumberpickerDemoCtrl">
-      <numberpicker max="100" default-value="5" value-step="5"></numberpicker>
-      <pre class="alert alert-info">Number is: {{value}}</pre>
+      <numberpicker max="100" value-step="5" ng-model="numberValue" ng-change="valueChanged()"></numberpicker>
+      <pre class="alert alert-info">Number is: {{numberValue}}</pre>
     </div>
     <script src="node_modules/angular/angular.min.js"></script>
     <script src="src/numberpicker.js"></script>
