@@ -9,7 +9,14 @@ angular.module("src/numberpicker.html", []).run(["$templateCache", function($tem
     "input::-webkit-outer-spin-button,\n" +
     "input::-webkit-inner-spin-button {\n" +
     "  -webkit-appearance: none;\n" +
-    "  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */\n" +
+    "  margin: 0;\n" +
+    "}\n" +
+    "\n" +
+    "/* Hide them from Firefox too\n" +
+    "   http://stackoverflow.com/a/22559163/399105\n" +
+    "*/\n" +
+    "input[type='number'] {\n" +
+    "    -moz-appearance: textfield;\n" +
     "}\n" +
     "</style>\n" +
     "<table>\n" +
